@@ -3,6 +3,7 @@ const Stripe = require("stripe");
 const nodemailer = require("nodemailer");
 const auth = require("../middleware/auth");
 const User = require("../models/userModel");
+const Order = require("../models/orderModel");
 
 const stripe = new Stripe(
   `${process.env.STRIPE_SK}`,
@@ -83,6 +84,19 @@ router.post("/", auth, async (req, res) => {
   } catch (e) {
     console.log(e)
     res.status(500).json({ error: e.message });
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    const orders = await Order.find().populate([
+      { path: 'userId' },
+      { path: 'orderItems.productId' }
+    ])
+    
+    return res.status(200).json({ success: true, orders: orders })
+  } catch (err) {
+    return res.status(500).json({ err: err.message })
   }
 })
 
