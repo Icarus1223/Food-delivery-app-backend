@@ -36,4 +36,4 @@ app.use(express.static("public"))
 
 app.use("/users", require("./routes/userRouter"));
 app.use("/products", require("./routes/productRouter"));
-app.use("/cart", require("./routes/cartRouter"));
+app.use("/order", require("./routes/orderRouter"));
