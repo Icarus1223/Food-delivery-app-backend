@@ -8,6 +8,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }))
 
 const PORT = process.env.PORT || 5000;
 
@@ -31,19 +32,8 @@ mongoose.connect(
 );
 
 // set up routes
+app.use(express.static("public"))
 
 app.use("/users", require("./routes/userRouter"));
 app.use("/products", require("./routes/productRouter"));
-
-app.use("/menus", require("./routes/menuRouter"));
-app.use("/pizzas", require("./routes/pizzaRouter"));
-app.use("/doughs", require("./routes/doughRouter"));
-app.use("/sauce", require("./routes/sauceRouter"));
-app.use("/cheese", require("./routes/cheeseRouter"));
-app.use("/topping", require("./routes/toppingRouter"));
-app.use("/special", require("./routes/specialRouter"));
-app.use("/chickenWingSauce", require("./routes/chickenWingSauceRouter"));
-app.use("/shawarma", require("./routes/shawarmaRouter"));
-app.use("/modal", require("./routes/modalRouter"));
-app.use("/combo", require("./routes/comboRouter"));
-app.use("/dip", require("./routes/dipRouter"));
+app.use("/cart", require("./routes/cartRouter"));

@@ -6,9 +6,7 @@ const Product = require("../models/productModel");
 
 const storage = multer.diskStorage({
   destination: "./public/uploads/product/",
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
+  filename: (req, file, cb) => { cb(null, Date.now() + path.extname(file.originalname)) }
 })
 const upload = multer({ storage: storage }).single("file")
 
@@ -25,6 +23,34 @@ router.post("/", auth, upload, async (req, res) => {
     return res.status(200).json({ success: true })
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+})
+
+router.get('/recent', async (req, res) => {
+  try {
+    const products = await Product.find().sort({ _id: -1 }).limit(5)
+    return res.status(200).json({ success: true, products: products })
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const product = await Product.findById(id)
+    return res.status(200).json({ success: true, product: product })
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find()
+    return res.status(200).json({ success: true, products: products })
+  } catch (err) {
+    console.log(err)
   }
 })
 
