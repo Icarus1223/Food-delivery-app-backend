@@ -3,23 +3,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-// set up express
-
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static("public"))
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`The server has started on port: ${PORT}`));
-
-// set up mongoose
-
-let url = "mongodb://localhost:27017/foods";
+app.use("/users", require("./routes/userRouter"));
+app.use("/products", require("./routes/productRouter"));
+app.use("/orders", require("./routes/orderRouter"));
 
 mongoose.connect(
-  url,
+  process.env.MONGO_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -31,9 +26,5 @@ mongoose.connect(
   }
 );
 
-// set up routes
-app.use(express.static("public"))
-
-app.use("/users", require("./routes/userRouter"));
-app.use("/products", require("./routes/productRouter"));
-app.use("/orders", require("./routes/orderRouter"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`The server has started on port: ${PORT}`));
