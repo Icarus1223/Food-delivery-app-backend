@@ -65,11 +65,11 @@ router.post("/", auth, async (req, res) => {
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
-      service: 'Gmail',
       auth: {
         user: "food.hero.mevada@gmail.com", // generated ethereal user
-        pass: "fouklslweulennnl", // generated ethereal password
+        pass: "tphhdfqfviqrezfr", // generated ethereal password
       },
+      tls: { rejectUnauthorized: false }
     });
 
     // send mail with defined transport object
@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
       { path: 'userId' },
       { path: 'orderItems.productId' }
     ])
-    
+
     return res.status(200).json({ success: true, orders: orders })
   } catch (err) {
     return res.status(500).json({ err: err.message })
